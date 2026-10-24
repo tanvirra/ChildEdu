@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Little Genius — Play, Learn & Grow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* High-Energy Toddler Palette */
+            --bubblegum-pink: #ff2e93;
+            --pink-bg: #ffe4f2;
+            --sunshine-yellow: #ffbe00;
+            --yellow-bg: #fff8d6;
+            --electric-green: #10b981;
+            --green-bg: #d1fae5;
+            --sky-cyan: #06b6d4;
+            --cyan-bg: #cffaff;
+            --bright-purple: #8b5cf6;
+            --purple-bg: #ede9fe;
+            --orange-pop: #ff6b00;
+            --white: #ffffff;
+            --dark-text: #0f172a;
+            --card-shadow: 0 12px 28px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            --font-main: 'Fredoka', cursive, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: linear-gradient(135deg, #e0f2fe 0%, #ffe4e6 50%, #fef3c7 100%);
+            background-size: 200% 200%;
+            animation: gradientBG 12s ease infinite;
+            color: var(--dark-text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Header Navigation */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 4px solid var(--sunshine-yellow);
+        }
+
+        .nav-btn, .parent-btn {
+            background: var(--sky-cyan);
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            padding: 12px 22px;
+            font-family: var(--font-main);
+            font-size: 1.15rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 5px 0px #0284c7;
+            transition: all 0.1s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .parent-btn {
+            background: var(--bright-purple);
+            box-shadow: 0 5px 0px #6d28d9;
+        }
+
+        .nav-btn:active, .parent-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0px transparent;
+        }
+
+        .stats-badge {
+            background: var(--sunshine-yellow);
+            color: var(--dark-text);
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.3rem;
+            box-shadow: 0 5px 0px #d97706;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .screen {
+            display: none;
+            flex: 1;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.92); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .hero-section h1 {
+            font-size: 3.2rem;
+            color: var(--bubblegum-pink);
+            margin-bottom: 8px;
+            text-shadow: 3px 3px 0px var(--sunshine-yellow), 5px 5px 0px var(--sky-cyan);
+            letter-spacing: 1px;
+        }
+
+        .hero-section p {
+            font-size: 1.5rem;
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .mascot-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+            cursor: pointer;
+        }
+
+        .mascot {
+            width: 95px;
+            height: 95px;
+            animation: bounce 2s infinite ease-in-out;
+            filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.15));
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(4deg); }
+        }
+
+        .speech-bubble {
+            background: var(--white);
+            padding: 14px 22px;
+            border-radius: 25px;
+            box-shadow: var(--card-shadow);
+            font-size: 1.3rem;
+            font-weight: 700;
+            border: 4px solid var(--bubblegum-pink);
+            color: #1e293b;
+        }
+
+        /* Catchy Grid Cards */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+            width: 100%;
+            padding: 10px;
+        }
+
+        .menu-card {
+            background: var(--white);
+            border-radius: 30px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: var(--card-shadow);
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-card:nth-child(1) { background: var(--cyan-bg); border: 5px solid var(--sky-cyan); border-bottom: 10px solid var(--sky-cyan); }
+        .menu-card:nth-child(2) { background: var(--yellow-bg); border: 5px solid var(--sunshine-yellow); border-bottom: 10px solid var(--sunshine-yellow); }
+        .menu-card:nth-child(3) { background: var(--green-bg); border: 5px solid var(--electric-green); border-bottom: 10px solid var(--electric-green); }
+        .menu-card:nth-child(4) { background: var(--pink-bg); border: 5px solid var(--bubblegum-pink); border-bottom: 10px solid var(--bubblegum-pink); }
+        .menu-card:nth-child(5) { background: var(--purple-bg); border: 5px solid var(--bright-purple); border-bottom: 10px solid var(--bright-purple); }
+        .menu-card:nth-child(6) { background: var(--cyan-bg); border: 5px solid var(--orange-pop); border-bottom: 10px solid var(--orange-pop); }
+        .menu-card:nth-child(7) { background: var(--yellow-bg); border: 5px solid var(--sunshine-yellow); border-bottom: 10px solid var(--sunshine-yellow); }
+
+        .menu-card:active {
+            transform: translateY(6px);
+            border-bottom-width: 5px;
+        }
+
+        .menu-card .card-icon {
+            font-size: 4rem;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+        }
+
+        .menu-card h3 {
+            font-size: 1.7rem;
+            color: var(--dark-text);
+            font-weight: 700;
+        }
+
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+
+        .module-title {
+            font-size: 2.4rem;
+            color: var(--bubblegum-pink);
+            text-shadow: 2px 2px 0px var(--sunshine-yellow);
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+            gap: 18px;
+            width: 100%;
+        }
+
+        .item-card {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+            transition: all 0.15s ease;
+            border: 4px solid #cbd5e1;
+            border-bottom: 8px solid #94a3b8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 145px;
+        }
+
+        .item-card:active {
+            transform: translateY(4px);
+            border-bottom-width: 4px;
+        }
+
+        .item-card .char {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--sky-cyan);
+            text-shadow: 1px 1px 0px var(--sunshine-yellow);
+        }
+
+        .item-card .subtext {
+            font-size: 1.1rem;
+            color: #475569;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .item-card .emoji {
+            font-size: 2.8rem;
+            margin-bottom: 4px;
+        }
+
+        .detail-view {
+            background: var(--white);
+            border-radius: 40px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            max-width: 650px;
+            width: 100%;
+            margin: auto;
+            position: relative;
+            border: 8px solid var(--bubblegum-pink);
+            border-bottom: 14px solid var(--bubblegum-pink);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .detail-large-char {
+            font-size: 7.5rem;
+            font-weight: 700;
+            color: var(--sky-cyan);
+            line-height: 1;
+            text-shadow: 4px 4px 0px var(--sunshine-yellow);
+        }
+
+        .detail-large-emoji {
+            font-size: 6.5rem;
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.12));
+        }
+
+        .detail-word {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--dark-text);
+            letter-spacing: 2px;
+        }
+
+        .audio-buttons-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            justify-content: center;
+        }
+
+        .action-btn {
+            background: var(--sky-cyan);
+            color: var(--white);
+            border: none;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-family: var(--font-main);
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 0px #0284c7;
+            transition: all 0.1s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn.secondary {
+            background: var(--sunshine-yellow);
+            color: var(--dark-text);
+            box-shadow: 0 6px 0px #d97706;
+        }
+
+        .action-btn.success {
+            background: var(--electric-green);
+            color: var(--white);
+            box-shadow: 0 6px 0px #059669;
+        }
+
+        .action-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0px transparent;
+        }
+
+        .tracing-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+            gap: 15px;
+        }
+
+        .tracing-modes {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .mode-btn {
+            background: var(--white);
+            border: 4px solid var(--bright-purple);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-family: var(--font-main);
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 0px var(--bright-purple);
+            transition: all 0.1s;
+        }
+
+        .mode-btn.active {
+            background: var(--bright-purple);
+            color: var(--white);
+        }
+
+        .canvas-wrapper {
+            position: relative;
+            background: var(--white);
+            border-radius: 35px;
+            box-shadow: var(--card-shadow);
+            border: 8px solid var(--sunshine-yellow);
+            overflow: hidden;
+            touch-action: none;
+        }
+
+        canvas {
+            display: block;
+            cursor: crosshair;
+        }
+
+        .tracing-controls {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .category-tabs {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            width: 100%;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .category-tab {
+            background: var(--white);
+            border: 3px solid #cbd5e1;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-family: var(--font-main);
+            font-weight: 700;
+            font-size: 1.15rem;
+            cursor: pointer;
+            white-space: nowrap;
+            box-shadow: 0 4px 0px #cbd5e1;
+            transition: all 0.1s;
+        }
+
+        .category-tab.active {
+            background: var(--bubblegum-pink);
+            color: var(--white);
+            border-color: var(--bubblegum-pink);
+            box-shadow: 0 4px 0px #be185d;
+        }
+
+        .game-card {
+            background: var(--white);
+            border-radius: 40px;
+            padding: 35px;
+            max-width: 650px;
+            width: 100%;
+            margin: auto;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            border: 8px solid var(--electric-green);
+            border-bottom: 14px solid var(--electric-green);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .game-prompt {
+            font-size: 2.2rem;
+            color: var(--dark-text);
+            font-weight: 700;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            width: 100%;
+        }
+
+        .option-btn {
+            background: var(--cyan-bg);
+            border: 5px solid var(--sky-cyan);
+            border-bottom: 8px solid var(--sky-cyan);
+            padding: 25px;
+            border-radius: 25px;
+            font-size: 2.8rem;
+            font-family: var(--font-main);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.1s;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+        }
+
+        .option-btn:active {
+            transform: translateY(4px);
+            border-bottom-width: 4px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(6px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--white);
+            padding: 35px;
+            border-radius: 35px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border: 6px solid var(--bright-purple);
+        }
+
+        .setting-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .setting-group label {
+            font-weight: 700;
+            font-size: 1.15rem;
+        }
+
+        .setting-group select, .setting-group input {
+            padding: 12px;
+            border-radius: 14px;
+            border: 3px solid #cbd5e1;
+            font-family: var(--font-main);
+            font-size: 1.05rem;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            animation: fall 1s linear forwards;
+            pointer-events: none;
+            border-radius: 3px;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(350px) rotate(720deg); opacity: 0; }
+        }
+
+        @media(max-width: 768px) {
+            .hero-section h1 { font-size: 2.3rem; }
+            .hero-section p { font-size: 1.15rem; }
+            .detail-large-char { font-size: 5.5rem; }
+            .options-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <button class="nav-btn" onclick="showScreen('home-screen')">🏠 Home</button>
+        <div class="stats-badge" id="star-counter">⭐ 0</div>
+        <button class="parent-btn" onclick="openParentModal()">⚙️ Parents</button>
+    </header>
+
+    <!-- 1. HOME SCREEN -->
+    <div id="home-screen" class="screen active">
+        <div class="hero-section">
+            <h1>Hello, Little Genius!</h1>
+            <p>Let’s Play, Learn and Grow!</p>
+            <div class="mascot-container" onclick="playMascotGreeting()">
+                <svg class="mascot" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" fill="#ffbe00" stroke="#d97706" stroke-width="4"/>
+                    <circle cx="35" cy="40" r="6" fill="#0f172a"/>
+                    <circle cx="65" cy="40" r="6" fill="#0f172a"/>
+                    <polygon points="50,45 42,58 58,58" fill="#ff6b00"/>
+                    <path d="M 40 65 Q 50 75 60 65" stroke="#0f172a" stroke-width="4" fill="none" stroke-linecap="round"/>
+                </svg>
+                <div class="speech-bubble" id="mascot-speech">Tap me or any card to play & learn!</div>
+            </div>
+        </div>
+
+        <div class="menu-grid">
+            <div class="menu-card" onclick="showScreen('abc-screen')">
+                <div class="card-icon">🔤</div>
+                <h3>ABC Adventure</h3>
+            </div>
+            <div class="menu-card" onclick="showScreen('numbers-screen')">
+                <div class="card-icon">🔢</div>
+                <h3>Learn Numbers</h3>
+            </div>
+            <div class="menu-card" onclick="showScreen('words-screen')">
+                <div class="card-icon">🎨</div>
+                <h3>Word & Picture World</h3>
+            </div>
+            <div class="menu-card" onclick="showScreen('trace-screen')">
+                <div class="card-icon">✍️</div>
+                <h3>Trace & Write</h3>
+            </div>
+            <div class="menu-card" onclick="showScreen('sound-screen')">
+                <div class="card-icon">🔊</div>
+                <h3>Sound Center</h3>
+            </div>
+            <div class="menu-card" onclick="showScreen('games-screen')">
+                <div class="card-icon">🎮</div>
+                <h3>Fun Learning Games</h3>
+            </div>
+            <div class="menu-card" onclick="showScreen('progress-screen')">
+                <div class="card-icon">🏆</div>
+                <h3>My Progress</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. ABC ADVENTURE SCREEN -->
+    <div id="abc-screen" class="screen">
+        <div class="module-header">
+            <button class="nav-btn" onclick="showScreen('home-screen')">⬅️ Back</button>
+            <h2 class="module-title">ABC Adventure</h2>
+            <div style="width: 80px;"></div>
+        </div>
+        <div class="items-grid" id="abc-grid"></div>
+    </div>
+
+    <!-- ABC DETAIL VIEW -->
+    <div id="abc-detail-screen" class="screen">
+        <div class="module-header">
+            <button class="nav-btn" onclick="showScreen('abc-screen')">⬅️ Back to Alphabet</button>
+            <h2 class="module-title" id="abc-detail-title">Letter A</h2>
+            <div style="width: 80px;"></div>
+        </div>
+        <div class="detail-view">
+            <div class="detail-large-char" id="abc-large-display">A a</div>
+            <div class="detail-large-emoji" id="abc-emoji-display">🍎</div>
+            <div class="detail-word" id="abc-word-display">APPLE</div>
+            <div class="audio-buttons-group">
+                <button class="action-btn" onclick="speakCurrentABC('name')">🗣️ Say Letter</button>
+                <button class="action-btn secondary" onclick="speakCurrentABC('sound')">🎵 Letter Sound</button>
+                <button class="action-btn success" onclick="speakCurrentABC('word')">🍎 Say Word</button>
+            </div>
+            <div style="display: flex; gap: 15px; margin-top: 10px;">
+                <button class="nav-btn" onclick="navigateABC(-1)">◀️ Prev</button>
+                <button class="nav-btn" onclick="navigateABC(1)">Next ▶️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. LEARN NUMBERS SCREEN -->
+    <div id="numbers-screen" class="screen">
+        <div class="module-header">
+            <button class="nav-btn" onclick="showScreen('home-screen')">⬅️ Back</button>
+            <h2 class="module-title">Learn Numbers (1–20)</h2>
+            <div style="width: 80px;"></div>
+        </div>
+        <div class="items-grid" id="numbers-grid"></div>
+    </div>
+
+    <!-- NUMBER DETAIL VIEW -->
+    <div id="number-detail-screen" class="screen">
+        <div class="module-header">
+            <button class="nav-btn" onclick="showScreen('numbers-screen')">⬅️ Back to Numbers</button>
+            <h2 class="module-title" id="num-detail-title">Number 1</h2>
+            <div style="width: 80px;"></div>
+        </div>
+        <div class="detail-view">
+            <div class="detail-large-char" id="num-large-display">1</div>
+            <div class="detail-large-emoji" id="num-emoji-display">🍎</div>
+            <div class="detail-word" id="num-word-display">ONE APPLE</div>
+            <div class="audio-buttons-group">
+                <button class="action-btn" onclick="speakCurrentNumber()">🗣️ Say Number & Count</button>
+                <button class="action-btn secondary" onclick="replayNumberSound()">🔄 Replay</button>
+            </div>
+            <div style="display: flex; gap: 15px; margin-top: 10px;">
+                <button class="nav-btn" onclick="navigateNumbers(-1)">◀️ Prev</button>
+                <button class="nav-btn" onclick="navigateNumbers(1)">Next ▶️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. WORD & PICTURE WORLD -->
+    <div id="words-screen" class="screen">
+        <div class="module-header">
+            <button class="nav-btn" onclick="showScreen('home-screen')">⬅️ Back</button>
+            <h2 class="module-title">Word & Picture World</h2>
+            <div style="width: 80px;"></div>
+        </div>
+        <div class="category-tabs" id="category-tabs"></div>
+        <div class="items-grid" id="words-grid"></div>
+    </div>
+
+    <!-- WORD DETAIL VIEW -->
+    <div id="word-detail-screen" class="screen">
+        <div class="module-header">
+            <button class="nav-btn" onclick="showScreen('words-screen')">⬅️ Back to Categories</button>
+            <h2 class="module-title" id="word-cat-title">Vocabulary</h2>
+            <div style="width: 80px;"></div>
+        </div>
+        <div class="detail-view">
+            <div class="detail-large-emoji" id="vocab-emoji-display">🐱</div>
+            <div class="detail-word" id="vocab-word-display">CAT</div>
+            <div class="audio-buttons-group">
+                <button class="action-btn" onclick="speakCurrentVocab()">🗣️ Say Word</button>
+            </div>
+            <div style="display: flex; gap: 15px; margin-top: 10px;">
+                <button class="nav-btn" onclick="navigateVocab(-1)">◀️ Prev</button>
+                <button class="nav-btn" onclick="navigateVocab(1)">Next ▶️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. TRACE & WRITE -->
+    <div id="trace-screen" class="screen">
+        <div class="module-header">
+            <button class="nav-btn" onclick="showScreen('home-screen')">⬅️ Back</button>
+            <h2 class="module-title">Trace & Write</h2>
+            <div style="width: 80px;"></div>
+        </div>
+        <div class="tracing-container">
+            <div class="tracing-modes">
+                <button class="mode-btn active" onclick="setTraceMode('upper')">Uppercase A-Z</button>
+                <button class="mode-btn" onclick="setTraceMode('lower')">Lowercase a-z</button>
+                <button class="mode-btn" onclick="setTraceMode('numbers')">Numbers 1-10</button>
+            </div>
+            <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; padding: 0 10px;">
+                <button class="nav-btn" onclick="changeTraceChar(-1)">◀️ Prev</button>
+                <h3 id="trace-char-label" style="font-size: 2rem; color: var(--bubblegum-pink);">A</h3>
+                <button class="nav-btn" onclick="changeTraceChar(1)">Next ▶️</button>
+            </div>
+            <div class="canvas-wrapper">
+                <canvas id="traceCanvas" width="350" height="350"></canvas>
+            </div>
+            <div class="tracing-controls">
+                <button class="action-btn secondary" onclick="clearCanvas()">🔄 Clear</button>
+                <button class="action-btn success" onclick="checkTracing()">✨ Check & Win Star</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. SOUND CENTER -->
+    <div id="sound-screen" class="screen">
+        <div class="module-header">
+            <button class="nav-btn" onclick="showScreen('home-screen')">⬅️ Back</button>
+            <h2 class="module-title">Sound Center</h2>
+            <div style="width: 80px;"></div>
+        </div>
+        <div class="detail-view">
+            <p style="font-size: 1.4rem; font-weight: 700;">Tap the giant magic button to hear musical chimes!</p>
+            <div style="font-size: 6rem; cursor: pointer;" onclick="playSuccessMelody()">🔊✨</div>
+            <button class="action-btn" onclick="playSuccessMelody()">Play Magical Sound</button>
+        </div>
+    </div>
+
+    <!-- 7. FUN LEARNING GAMES -->
+    <div id="games-screen" class="screen">
+        <div class="module-header">
+            <button class="nav-btn" onclick="showScreen('home-screen')">⬅️ Back</button>
+            <h2 class="module-title">Fun Learning Games</h2>
+            <div style="width: 80px;"></div>
+        </div>
+        <div class="game-card" id="game-card-container">
+            <div class="game-prompt" id="game-prompt">Can you find the letter A?</div>
+            <div class="options-grid" id="game-options"></div>
+            <button class="action-btn secondary" onclick="loadNewGame()">🔄 Next Question</button>
+        </div>
+    </div>
+
+    <!-- 8. PROGRESS SCREEN -->
+    <div id="progress-screen" class="screen">
+        <div class="module-header">
+            <button class="nav-btn" onclick="showScreen('home-screen')">⬅️ Back</button>
+            <h2 class="module-title">My Progress</h2>
+            <div style="width: 80px;"></div>
+        </div>
+        <div class="detail-view">
+            <div style="font-size: 4.5rem;">🏆⭐</div>
+            <h3 style="font-size: 2.2rem; color: var(--bubblegum-pink);">Fantastic Job!</h3>
+            <p id="progress-stats-text" style="font-size: 1.4rem; line-height: 1.8; font-weight: 700;">Total Stars Earned: 0</p>
+            <button class="action-btn" onclick="showScreen('home-screen')">Keep Playing!</button>
+        </div>
+    </div>
+
+    <!-- PARENT SETTINGS MODAL -->
+    <div class="modal-overlay" id="parent-modal">
+        <div class="modal-content">
+            <h2>⚙️ Parent Settings</h2>
+            <div class="setting-group">
+                <label>Speech Voice Selection</label>
+                <select id="voice-select"></select>
+            </div>
+            <div class="setting-group">
+                <label>Speech Speed: <span id="rate-val">0.9</span></label>
+                <input type="range" id="speech-rate" min="0.5" max="1.5" step="0.1" value="0.9" oninput="document.getElementById('rate-val').innerText=this.value">
+            </div>
+            <div class="setting-group">
+                <label>Audio Status</label>
+                <button class="action-btn secondary" onclick="toggleMute()" id="mute-btn">🔊 Sound Enabled</button>
+            </div>
+            <div class="setting-group">
+                <label>Reset Learning Progress</label>
+                <button class="action-btn" style="background: var(--bubblegum-pink); box-shadow: 0 5px 0px #be185d;" onclick="resetProgress()">⚠️ Reset Stars & Progress</button>
+            </div>
+            <button class="action-btn" onclick="closeParentModal()">Close Settings</button>
+        </div>
+    </div>
+
+    <!-- JavaScript Application Code -->
+    <script>
+        /* ================= WEB AUDIO API SYNTHESIZER ================= */
+        let audioCtx = null;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playTone(freq, type = 'sine', duration = 0.25) {
+            try {
+                if (appState.muted) return;
+                let ctx = getAudioContext();
+                let osc = ctx.createOscillator();
+                let gain = ctx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                gain.gain.setValueAtTime(0.35, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + duration);
+            } catch (e) {
+                console.log("Audio play error:", e);
+            }
+        }
+
+        function playPopSound() {
+            playTone(659.25, 'sine', 0.15); // E5 Pop Sound
+        }
+
+        function playSuccessMelody() {
+            playTone(523.25, 'sine', 0.15); // C5
+            setTimeout(() => playTone(659.25, 'sine', 0.15), 120); // E5
+            setTimeout(() => playTone(783.99, 'sine', 0.25), 240); // G5
+        }
+
+        let synth = window.speechSynthesis;
+        let selectedVoice = null;
+
+        function initVoices() {
+            if (!synth) return;
+            function populateVoices() {
+                let voices = synth.getVoices();
+                let voiceSelect = document.getElementById('voice-select');
+                if (!voiceSelect) return;
+                voiceSelect.innerHTML = '';
+                voices.forEach((v, i) => {
+                    if (v.lang.startsWith('en')) {
+                        let opt = document.createElement('option');
+                        opt.value = i;
+                        opt.textContent = `${v.name} (${v.lang})`;
+                        voiceSelect.appendChild(opt);
+                        if (!selectedVoice && (v.default || v.lang === 'en-US')) {
+                            selectedVoice = v;
+                        }
+                    }
+                });
+            }
+            populateVoices();
+            if (synth.onvoiceschanged !== undefined) {
+                synth.onvoiceschanged = populateVoices;
+            }
+        }
+
+        function speakText(text) {
+            playPopSound();
+            if (appState.muted) return;
+            if (synth) {
+                synth.cancel();
+                let utter = new SpeechSynthesisUtterance(text);
+                let rateInput = document.getElementById('speech-rate');
+                utter.rate = rateInput ? parseFloat(rateInput.value) : 0.9;
+                utter.pitch = 1.1;
+                let voiceSelect = document.getElementById('voice-select');
+                let voices = synth.getVoices();
+                if (voiceSelect && voiceSelect.value && voices[voiceSelect.value]) {
+                    utter.voice = voices[voiceSelect.value];
+                } else if (selectedVoice) {
+                    utter.voice = selectedVoice;
+                }
+                synth.speak(utter);
+            }
+        }
+
+        /* ================= DATASETS ================= */
+        const alphabetData = [
+            { letter: 'A', lower: 'a', word: 'Apple', sound: 'æ, as in Apple', emoji: '🍎' },
+            { letter: 'B', lower: 'b', word: 'Ball', sound: 'b, as in Ball', emoji: '⚽' },
+            { letter: 'C', lower: 'c', word: 'Cat', sound: 'k, as in Cat', emoji: '🐱' },
+            { letter: 'D', lower: 'd', word: 'Dog', sound: 'd, as in Dog', emoji: '🐶' },
+            { letter: 'E', lower: 'e', word: 'Elephant', sound: 'eh, as in Elephant', emoji: '🐘' },
+            { letter: 'F', lower: 'f', word: 'Fish', sound: 'f, as in Fish', emoji: '🐟' },
+            { letter: 'G', lower: 'g', word: 'Goat', sound: 'g, as in Goat', emoji: '🐐' },
+            { letter: 'H', lower: 'h', word: 'House', sound: 'h, as in House', emoji: '🏠' },
+            { letter: 'I', lower: 'i', word: 'Ice cream', sound: 'ih, as in Ice cream', emoji: '🍦' },
+            { letter: 'J', lower: 'j', word: 'Juice', sound: 'j, as in Juice', emoji: '🧃' },
+            { letter: 'K', lower: 'k', word: 'Kite', sound: 'k, as in Kite', emoji: '🪁' },
+            { letter: 'L', lower: 'l', word: 'Lion', sound: 'l, as in Lion', emoji: '🦁' },
+            { letter: 'M', lower: 'm', word: 'Mango', sound: 'm, as in Mango', emoji: '🥭' },
+            { letter: 'N', lower: 'n', word: 'Nest', sound: 'n, as in Nest', emoji: '🪹' },
+            { letter: 'O', lower: 'o', word: 'Orange', sound: 'o, as in Orange', emoji: '🍊' },
+            { letter: 'P', lower: 'p', word: 'Parrot', sound: 'p, as in Parrot', emoji: '🦜' },
+            { letter: 'Q', lower: 'q', word: 'Queen', sound: 'kw, as in Queen', emoji: '👑' },
+            { letter: 'R', lower: 'r', word: 'Rabbit', sound: 'r, as in Rabbit', emoji: '🐰' },
+            { letter: 'S', lower: 's', word: 'Sun', sound: 's, as in Sun', emoji: '☀️' },
+            { letter: 'T', lower: 't', word: 'Tiger', sound: 't, as in Tiger', emoji: '🐯' },
+            { letter: 'U', lower: 'u', word: 'Umbrella', sound: 'uh, as in Umbrella', emoji: '☂️' },
+            { letter: 'V', lower: 'v', word: 'Van', sound: 'v, as in Van', emoji: '🚐' },
+            { letter: 'W', lower: 'w', word: 'Watch', sound: 'w, as in Watch', emoji: '⌚' },
+            { letter: 'X', lower: 'x', word: 'Xylophone', sound: 'ks, as in Xylophone', emoji: '🎼' },
+            { letter: 'Y', lower: 'y', word: 'Yo-yo', sound: 'y, as in Yo yo', emoji: '🪀' },
+            { letter: 'Z', lower: 'z', word: 'Zebra', sound: 'z, as in Zebra', emoji: '🦓' }
+        ];
+
+        const numbersData = Array.from({length: 20}, (_, i) => {
+            const num = i + 1;
+            const emojis = ['🍎', '🎈', '⭐', '🦋', '⚽', '🌸', '🐟', '🐦', '💖', '🧱'];
+            return { number: num, word: `${num} Items`, emoji: emojis[i % emojis.length] };
+        });
+
+        const vocabCategories = {
+            'Animals': [
+                { word: 'Cat', emoji: '🐱' }, { word: 'Dog', emoji: '🐶' }, { word: 'Cow', emoji: '🐮' },
+                { word: 'Goat', emoji: '🐐' }, { word: 'Lion', emoji: '🦁' }, { word: 'Tiger', emoji: '🐯' },
+                { word: 'Elephant', emoji: '🐘' }, { word: 'Rabbit', emoji: '🐰' }, { word: 'Fish', emoji: '🐟' }, { word: 'Bird', emoji: '🐦' }
+            ],
+            'Fruits': [
+                { word: 'Apple', emoji: '🍎' }, { word: 'Banana', emoji: '🍌' }, { word: 'Grapes', emoji: '🍇' },
+                { word: 'Orange', emoji: '🍊' }, { word: 'Strawberry', emoji: '🍓' }, { word: 'Watermelon', emoji: '🍉' }
+            ],
+            'Vegetables': [
+                { word: 'Carrot', emoji: '🥕' }, { word: 'Broccoli', emoji: '🥦' }, { word: 'Tomato', emoji: '🍅' },
+                { word: 'Potato', emoji: '🥔' }, { word: 'Corn', emoji: '🌽' }
+            ],
+            'Colors': [
+                { word: 'Red', emoji: '🔴' }, { word: 'Blue', emoji: '🔵' }, { word: 'Green', emoji: '🟢' },
+                { word: 'Yellow', emoji: '🟡' }, { word: 'Purple', emoji: '🟣' }
+            ],
+            'Vehicles': [
+                { word: 'Car', emoji: '🚗' }, { word: 'Bus', emoji: '🚌' }, { word: 'Train', emoji: '🚆' },
+                { word: 'Airplane', emoji: '✈️' }, { word: 'Bicycle', emoji: '🚲' }
+            ]
+        };
+
+        /* ================= STATE ================= */
+        let appState = {
+            stars: parseInt(localStorage.getItem('lg_stars') || '0'),
+            muted: false,
+            currentABCIndex: 0,
+            currentNumIndex: 0,
+            currentVocabCategory: 'Animals',
+            currentVocabIndex: 0,
+            traceMode: 'upper',
+            traceIndex: 0
+        };
+
+        const greetings = [
+            "Hello, little learner!",
+            "Are you ready to learn?",
+            "Let’s learn something new!",
+            "Great job!",
+            "You are awesome!"
+        ];
+
+        /* ================= INIT ================= */
+        window.addEventListener('DOMContentLoaded', () => {
+            updateStarDisplay();
+            initABCGrid();
+            initNumbersGrid();
+            initVocabCategories();
+            initVoices();
+            initCanvas();
+        });
+
+        function updateStarDisplay() {
+            let badge = document.getElementById('star-counter');
+            if (badge) badge.innerText = `⭐ ${appState.stars}`;
+            let statsText = document.getElementById('progress-stats-text');
+            if (statsText) statsText.innerText = `Total Stars Earned: ${appState.stars}\nKeep exploring letters, numbers, and games!`;
+            localStorage.setItem('lg_stars', appState.stars);
+        }
+
+        function addStar(count = 1) {
+            appState.stars += count;
+            updateStarDisplay();
+            playSuccessMelody();
+            triggerConfetti();
+        }
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            let target = document.getElementById(screenId);
+            if (target) target.classList.add('active');
+            if (screenId === 'trace-screen') {
+                setupTracingCanvas();
+            } else if (screenId === 'games-screen') {
+                loadNewGame();
+            }
+        }
+
+        function playMascotGreeting() {
+            let greeting = greetings[Math.floor(Math.random() * greetings.length)];
+            let speechEl = document.getElementById('mascot-speech');
+            if (speechEl) speechEl.innerText = greeting;
+            speakText(greeting);
+        }
+
+        /* ================= ABC MODULE ================= */
+        function initABCGrid() {
+            let grid = document.getElementById('abc-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            alphabetData.forEach((item, idx) => {
+                let card = document.createElement('div');
+                card.className = 'item-card';
+                card.innerHTML = `
+                    <div class="emoji">${item.emoji}</div>
+                    <div class="char">${item.letter} ${item.lower}</div>
+                    <div class="subtext">${item.word}</div>
+                `;
+                card.onclick = () => {
+                    appState.currentABCIndex = idx;
+                    openABCDetail();
+                };
+                grid.appendChild(card);
+            });
+        }
+
+        function openABCDetail() {
+            let item = alphabetData[appState.currentABCIndex];
+            document.getElementById('abc-detail-title').innerText = `Letter ${item.letter}`;
+            document.getElementById('abc-large-display').innerText = `${item.letter} ${item.lower}`;
+            document.getElementById('abc-emoji-display').innerText = item.emoji;
+            document.getElementById('abc-word-display').innerText = item.word.toUpperCase();
+            showScreen('abc-detail-screen');
+            speakText(`Letter ${item.letter}. ${item.letter} is for ${item.word}`);
+        }
+
+        function speakCurrentABC(type) {
+            let item = alphabetData[appState.currentABCIndex];
+            if (type === 'name') speakText(`Letter ${item.letter}`);
+            else if (type === 'sound') speakText(`The sound for letter ${item.letter} is ${item.sound}`);
+            else if (type === 'word') speakText(`${item.word}`);
+        }
+
+        function navigateABC(direction) {
+            appState.currentABCIndex = (appState.currentABCIndex + direction + alphabetData.length) % alphabetData.length;
+            openABCDetail();
+        }
+
+        /* ================= NUMBERS MODULE ================= */
+        function initNumbersGrid() {
+            let grid = document.getElementById('numbers-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            numbersData.forEach((item, idx) => {
+                let card = document.createElement('div');
+                card.className = 'item-card';
+                card.innerHTML = `
+                    <div class="emoji">${item.emoji}</div>
+                    <div class="char">${item.number}</div>
+                    <div class="subtext">Number</div>
+                `;
+                card.onclick = () => {
+                    appState.currentNumIndex = idx;
+                    openNumberDetail();
+                };
+                grid.appendChild(card);
+            });
+        }
+
+        function openNumberDetail() {
+            let item = numbersData[appState.currentNumIndex];
+            document.getElementById('num-detail-title').innerText = `Number ${item.number}`;
+            document.getElementById('num-large-display').innerText = item.number;
+            document.getElementById('num-emoji-display').innerText = item.emoji.repeat(Math.min(item.number, 5));
+            document.getElementById('num-word-display').innerText = `Count: ${item.number}`;
+            showScreen('number-detail-screen');
+            speakCurrentNumber();
+        }
+
+        function speakCurrentNumber() {
+            let item = numbersData[appState.currentNumIndex];
+            speakText(`Number ${item.number}`);
+        }
+
+        function replayNumberSound() {
+            speakCurrentNumber();
+        }
+
+        function navigateNumbers(direction) {
+            appState.currentNumIndex = (appState.currentNumIndex + direction + numbersData.length) % numbersData.length;
+            openNumberDetail();
+        }
+
+        /* ================= VOCABULARY MODULE ================= */
+        function initVocabCategories() {
+            let tabs = document.getElementById('category-tabs');
+            if (!tabs) return;
+            tabs.innerHTML = '';
+            Object.keys(vocabCategories).forEach(cat => {
+                let btn = document.createElement('button');
+                btn.className = `category-tab ${cat === appState.currentVocabCategory ? 'active' : ''}`;
+                btn.innerText = cat;
+                btn.onclick = () => {
+                    appState.currentVocabCategory = cat;
+                    appState.currentVocabIndex = 0;
+                    initVocabCategories();
+                    renderVocabGrid();
+                };
+                tabs.appendChild(btn);
+            });
+            renderVocabGrid();
+        }
+
+        function renderVocabGrid() {
+            let grid = document.getElementById('words-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            let items = vocabCategories[appState.currentVocabCategory];
+            items.forEach((item, idx) => {
+                let card = document.createElement('div');
+                card.className = 'item-card';
+                card.innerHTML = `
+                    <div class="emoji">${item.emoji}</div>
+                    <div class="subtext" style="font-weight: 700; font-size: 1.1rem; color: #0f172a;">${item.word}</div>
+                `;
+                card.onclick = () => {
+                    appState.currentVocabIndex = idx;
+                    openVocabDetail();
+                };
+                grid.appendChild(card);
+            });
+        }
+
+        function openVocabDetail() {
+            let item = vocabCategories[appState.currentVocabCategory][appState.currentVocabIndex];
+            document.getElementById('word-cat-title').innerText = appState.currentVocabCategory;
+            document.getElementById('vocab-emoji-display').innerText = item.emoji;
+            document.getElementById('vocab-word-display').innerText = item.word.toUpperCase();
+            showScreen('word-detail-screen');
+            speakText(item.word);
+        }
+
+        function speakCurrentVocab() {
+            let item = vocabCategories[appState.currentVocabCategory][appState.currentVocabIndex];
+            speakText(item.word);
+        }
+
+        function navigateVocab(direction) {
+            let items = vocabCategories[appState.currentVocabCategory];
+            appState.currentVocabIndex = (appState.currentVocabIndex + direction + items.length) % items.length;
+            openVocabDetail();
+        }
+
+        /* ================= TRACE & WRITE MODULE ================= */
+        let canvas, ctx, isDrawing = false, hasDrawn = false;
+
+        function initCanvas() {
+            canvas = document.getElementById('traceCanvas');
+            if (!canvas) return;
+            ctx = canvas.getContext('2d');
+            setupCanvasListeners();
+        }
+
+        function setTraceMode(mode) {
+            appState.traceMode = mode;
+            appState.traceIndex = 0;
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            setupTracingCanvas();
+        }
+
+        function changeTraceChar(dir) {
+            let maxCount = appState.traceMode === 'numbers' ? 10 : 26;
+            appState.traceIndex = (appState.traceIndex + dir + maxCount) % maxCount;
+            setupTracingCanvas();
+        }
+
+        function setupTracingCanvas() {
+            if (!canvas) return;
+            let charLabel = '';
+            if (appState.traceMode === 'upper') charLabel = alphabetData[appState.traceIndex].letter;
+            else if (appState.traceMode === 'lower') charLabel = alphabetData[appState.traceIndex].lower;
+            else charLabel = (appState.traceIndex + 1).toString();
+
+            let labelEl = document.getElementById('trace-char-label');
+            if (labelEl) labelEl.innerText = `Trace: ${charLabel}`;
+            clearCanvas();
+            drawTraceGuide(charLabel);
+        }
+
+        function drawTraceGuide(char) {
+            if (!ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.font = 'bold 200px var(--font-main)';
+            ctx.fillStyle = '#e2e8f0';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(char, canvas.width / 2, canvas.height / 2);
+        }
+
+        function setupCanvasListeners() {
+            if (!canvas) return;
+            canvas.addEventListener('mousedown', startDraw);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDraw);
+            canvas.addEventListener('mouseleave', stopDraw);
+
+            canvas.addEventListener('touchstart', (e) => { startDraw(e.touches[0]); e.preventDefault(); });
+            canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); });
+            canvas.addEventListener('touchend', stopDraw);
+        }
+
+        function startDraw(e) {
+            isDrawing = true;
+            hasDrawn = true;
+            ctx.beginPath();
+            let rect = canvas.getBoundingClientRect();
+            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.strokeStyle = '#ff2e93';
+            ctx.lineWidth = 16;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            let rect = canvas.getBoundingClientRect();
+            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.stroke();
+        }
+
+        function stopDraw() {
+            isDrawing = false;
+        }
+
+        function clearCanvas() {
+            if (!canvas) return;
+            let charLabel = '';
+            if (appState.traceMode === 'upper') charLabel = alphabetData[appState.traceIndex].letter;
+            else if (appState.traceMode === 'lower') charLabel = alphabetData[appState.traceIndex].lower;
+            else charLabel = (appState.traceIndex + 1).toString();
+            drawTraceGuide(charLabel);
+            hasDrawn = false;
+        }
+
+        function checkTracing() {
+            if (!hasDrawn) {
+                speakText("Please trace the character first!");
+                return;
+            }
+            speakText("Wonderful writing! Great job!");
+            addStar(3);
+            setTimeout(clearCanvas, 1500);
+        }
+
+        /* ================= FUN GAMES MODULE ================= */
+        function loadNewGame() {
+            let gameType = Math.floor(Math.random() * 3);
+            let promptText = document.getElementById('game-prompt');
+            let optionsGrid = document.getElementById('game-options');
+            if (!promptText || !optionsGrid) return;
+            optionsGrid.innerHTML = '';
+
+            if (gameType === 0) {
+                let target = alphabetData[Math.floor(Math.random() * alphabetData.length)];
+                promptText.innerText = `Can you find the letter ${target.letter}?`;
+                speakText(promptText.innerText);
+
+                let choices = [target.letter];
+                while(choices.length < 4) {
+                    let rand = alphabetData[Math.floor(Math.random() * alphabetData.length)].letter;
+                    if(!choices.includes(rand)) choices.push(rand);
+                }
+                choices.sort(() => Math.random() - 0.5);
+
+                choices.forEach(c => {
+                    let btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.innerText = c;
+                    btn.onclick = () => {
+                        if(c === target.letter) {
+                            speakText("Excellent! Correct!");
+                            addStar(2);
+                            setTimeout(loadNewGame, 1200);
+                        } else {
+                            speakText("Try again!");
+                        }
+                    };
+                    optionsGrid.appendChild(btn);
+                });
+            } else if (gameType === 1) {
+                let target = alphabetData[Math.floor(Math.random() * alphabetData.length)];
+                promptText.innerText = `What letter starts with ${target.emoji} (${target.word})?`;
+                speakText(promptText.innerText);
+
+                let choices = [target.letter];
+                while(choices.length < 4) {
+                    let rand = alphabetData[Math.floor(Math.random() * alphabetData.length)].letter;
+                    if(!choices.includes(rand)) choices.push(rand);
+                }
+                choices.sort(() => Math.random() - 0.5);
+
+                choices.forEach(c => {
+                    let btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.innerText = c;
+                    btn.onclick = () => {
+                        if(c === target.letter) {
+                            speakText("Wonderful! That's right!");
+                            addStar(2);
+                            setTimeout(loadNewGame, 1200);
+                        } else {
+                            speakText("Not quite, try again!");
+                        }
+                    };
+                    optionsGrid.appendChild(btn);
+                });
+            } else {
+                let num = Math.floor(Math.random() * 10) + 1;
+                let emojis = '⭐'.repeat(num);
+                promptText.innerText = `How many stars do you see?\n${emojis}`;
+                speakText("How many stars can you see?");
+
+                let choices = [num];
+                while(choices.length < 4) {
+                    let rand = Math.floor(Math.random() * 10) + 1;
+                    if(!choices.includes(rand)) choices.push(rand);
+                }
+                choices.sort(() => Math.random() - 0.5);
+
+                choices.forEach(c => {
+                    let btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.innerText = c;
+                    btn.onclick = () => {
+                        if(c === num) {
+                            speakText(`Correct! There are ${num} stars!`);
+                            addStar(2);
+                            setTimeout(loadNewGame, 1200);
+                        } else {
+                            speakText("Try again!");
+                        }
+                    };
+                    optionsGrid.appendChild(btn);
+                });
+            }
+        }
+
+        /* ================= PARENT SETTINGS ================= */
+        function openParentModal() {
+            let modal = document.getElementById('parent-modal');
+            if (modal) modal.style.display = 'flex';
+        }
+
+        function closeParentModal() {
+            let modal = document.getElementById('parent-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function toggleMute() {
+            appState.muted = !appState.muted;
+            let btn = document.getElementById('mute-btn');
+            if (btn) btn.innerText = appState.muted ? "🔇 Sound Muted" : "🔊 Sound Enabled";
+        }
+
+        function resetProgress() {
+            if(confirm("Are you sure you want to reset all stars and learning progress?")) {
+                appState.stars = 0;
+                updateStarDisplay();
+                alert("Progress has been reset.");
+                closeParentModal();
+            }
+        }
+
+        function triggerConfetti() {
+            for(let i=0; i<18; i++) {
+                let conf = document.createElement('div');
+                conf.className = 'confetti';
+                conf.style.left = Math.random() * window.innerWidth + 'px';
+                conf.style.top = '50px';
+                conf.style.background = ['#ff2e93', '#ffbe00', '#10b981', '#06b6d4', '#8b5cf6'][Math.floor(Math.random()*5)];
+                document.body.appendChild(conf);
+                setTimeout(() => conf.remove(), 1000);
+            }
+        }
+    </script>
+</body>
+</html>
